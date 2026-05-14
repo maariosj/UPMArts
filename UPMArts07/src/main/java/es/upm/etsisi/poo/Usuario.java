@@ -16,8 +16,8 @@ public abstract class Usuario {
 	private String nick;
 	private String nombre;
 	private String correo;
-	private String contraseñaCifrada;
-	public void Usuario(String nick, String nombre, String correo, String contraseña) {
+	private String contrase?aCifrada;
+	public void Usuario(String nick, String nombre, String correo, String contrase?a) {
 	
 	}
 	
@@ -33,11 +33,11 @@ public abstract class Usuario {
 	
 	}
 	
-	public void setContraseña(String nuevaContraseña) {
+	public void setContrase?a(String nuevaContrase?a) {
 	
 	}
 	
-	public boolean verificarContraseña(String contraseña) {
+	public boolean verificarContrase?a(String contrase?a) {
 	
 	}
 }
