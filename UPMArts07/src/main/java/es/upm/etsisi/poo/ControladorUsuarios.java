@@ -10,7 +10,7 @@
 //
 
 
-
+import java.util.HashMap;
 
 public class ControladorUsuarios implements IControladorUsuario {
 	private IUsuarioDAO dao;
@@ -23,7 +23,7 @@ public class ControladorUsuarios implements IControladorUsuario {
 	
 	}
 	
-	public boolean login(String email, String contraseña) {
+	public boolean login(String email, String contrasena) {
 	
 	}
 	
@@ -31,7 +31,7 @@ public class ControladorUsuarios implements IControladorUsuario {
 	
 	}
 	
-	public boolean validarContraseña(String contraseña) {
+	public boolean validarContrasena(String contrasena) {
 	
 	}
 	

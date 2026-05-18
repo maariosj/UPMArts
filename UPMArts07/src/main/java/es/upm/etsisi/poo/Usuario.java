@@ -16,34 +16,47 @@ public abstract class Usuario implements IDatosUsuaio {
 	private String nick;
 	private String nombre;
 	private String correo;
-	private String contraseñaCifrada;
-	public void Usuario(String nick, String nombre, String correo, String contraseña) {
+	private String contrasenaCifrada;
+
+	public void Usuario(String nick, String nombre, String correo, String contrasena) {
+        this.nick = nick;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contrasenaCifrada = cifrarContrasena(contrasena);
 	
 	}
 	
 	public String getNick() {
-	
+        return this.nick;
 	}
 	
 	public String getNombre() {
+        return this.nombre;
 	
 	}
 	
 	public String getCorreo() {
+        return this.correo;
 	
 	}
 	
-	public void setContraseña(String nuevaContraseña) {
+	public void setContrasena(String nuevaContrasena) {
+        this.contrasenaCifrada = nuevaContrasena;
 	
 	}
 	
-	public boolean verificarContraseña(String contraseña) {
+	public boolean verificarContrasena(String contrasena) {
+        String intentoCifrado = cifrarContrasena(contrasena);
+        return intentoCifrado.equals(this.contrasenaCifrada);
 	
 	}
 	
-	private String cifrarContraseña(String contraseña) {
+	private String cifrarContrasena(String contrasena) {
 	
 	}
+    @Override
+    public String toString() {
+        return nick + ";" + nombre + ";" + correo + ";" + contrasenaCifrada;
+    }
 	
-	public String getCorreo();
 }
