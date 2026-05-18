@@ -8,11 +8,11 @@
 //  @ Author : 
 //
 //
-
+package es.upm.etsisi.poo;
 
 
 
 public class  PreferenciaArtistica {
 	private int nivelExp;
-	private DiscpArt tipPreferencia;
+	private DiscpArt tipoPreferencia;
 }

@@ -9,7 +9,7 @@
 //
 //
 
-
+package es.upm.etsisi.poo;
 
 
 public class UsuarioFicheroDAO implements IUsuarioDAO {
@@ -44,5 +44,5 @@ public class UsuarioFicheroDAO implements IUsuarioDAO {
 	
 	public boolean existeNick(String nick);
 	
-	public boolean actualizarUsuario(Strin nick, Usuario u);
+	public boolean actualizarUsuario(String nick, Usuario u);
 }

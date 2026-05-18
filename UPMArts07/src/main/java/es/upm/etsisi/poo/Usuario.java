@@ -9,7 +9,7 @@
 //
 //
 
-
+package es.upm.etsisi.poo;
 
 
 public abstract class Usuario implements IDatosUsuaio {
@@ -18,13 +18,12 @@ public abstract class Usuario implements IDatosUsuaio {
 	private String correo;
 	private String contrasenaCifrada;
 
-	public void Usuario(String nick, String nombre, String correo, String contrasena) {
+    public Usuario(String nick, String nombre, String correo, String contrasena) {
         this.nick = nick;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenaCifrada = cifrarContrasena(contrasena);
-	
-	}
+    }
 	
 	public String getNick() {
         return this.nick;

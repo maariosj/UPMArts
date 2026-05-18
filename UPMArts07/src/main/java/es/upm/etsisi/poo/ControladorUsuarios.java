@@ -9,7 +9,7 @@
 //
 //
 
-
+package es.upm.etsisi.poo;
 import java.util.HashMap;
 
 public class ControladorUsuarios implements IControladorUsuario {
@@ -40,8 +40,8 @@ public class ControladorUsuarios implements IControladorUsuario {
 	}
 	
 	public boolean login(String email, String pass);
-	
+
 	public boolean registrarParticipante(HashMap datos);
-	
+
 	public boolean registrarInstructor(HashMap datos, HashMap pago);
 }
