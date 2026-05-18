@@ -4,7 +4,7 @@
 //
 //  @ Project : UPMArts
 //  @ File Name : IAdaptadorAutenticador.java
-//  @ Date : 07/05/2026
+//  @ Date : 18/05/2026
 //  @ Author : 
 //
 //

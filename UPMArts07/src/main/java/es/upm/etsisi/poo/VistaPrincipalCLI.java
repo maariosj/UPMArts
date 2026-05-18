@@ -4,7 +4,7 @@
 //
 //  @ Project : UPMArts
 //  @ File Name : VistaPrincipalCLI.java
-//  @ Date : 07/05/2026
+//  @ Date : 18/05/2026
 //  @ Author : 
 //
 //
@@ -13,11 +13,11 @@
 
 
 public class VistaPrincipalCLI {
-	private VistaUsuariosCLI vistaUsuarios;
-	private VistaEspaciosCLI vistaEspacios;
-	private VistaActividadesCLI vistaActividades;
-	private VistaAsociacionesCLI vistaAsociaciones;
 	public void iniciarAplicacion() {
+	
+	}
+	
+	public void mostrarMenu() {
 	
 	}
 }

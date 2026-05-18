@@ -4,7 +4,7 @@
 //
 //  @ Project : UPMArts
 //  @ File Name : IUsuarioDAO.java
-//  @ Date : 07/05/2026
+//  @ Date : 18/05/2026
 //  @ Author : 
 //
 //
@@ -16,4 +16,5 @@ public interface IUsuarioDAO {
 	public boolean guardarUsuario(Usuario u);
 	public Usuario buscarPorEmail(String email);
 	public boolean existeNick(String nick);
+	public boolean actualizarUsuario(Strin nick, Usuario u);
 }

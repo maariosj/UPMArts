@@ -2,8 +2,8 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/UPMArts07/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/UPMArts07/src/main/java/es/upm/etsisi/poo/PreferenciaArtística.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/UPMArts07/src/main/java/es/upm/etsisi/poo/Usuario.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/UPMArts07/src/main/java/es/upm/etsisi/poo/PreferenciaArtística.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UPMArts07/src/main/java/es/upm/etsisi/poo/Usuario.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UPMArts07/src/main/resources" charset="UTF-8" />
   </component>
 </project>

@@ -4,7 +4,7 @@
 //
 //  @ Project : UPMArts
 //  @ File Name : Usuario.java
-//  @ Date : 07/05/2026
+//  @ Date : 18/05/2026
 //  @ Author : 
 //
 //
@@ -12,12 +12,12 @@
 
 
 
-public abstract class Usuario {
+public abstract class Usuario implements IDatosUsuaio {
 	private String nick;
 	private String nombre;
 	private String correo;
-	private String contrase?aCifrada;
-	public void Usuario(String nick, String nombre, String correo, String contrase?a) {
+	private String contraseñaCifrada;
+	public void Usuario(String nick, String nombre, String correo, String contraseña) {
 	
 	}
 	
@@ -29,15 +29,21 @@ public abstract class Usuario {
 	
 	}
 	
-	public void getEmail() {
+	public String getCorreo() {
 	
 	}
 	
-	public void setContrase?a(String nuevaContrase?a) {
+	public void setContraseña(String nuevaContraseña) {
 	
 	}
 	
-	public boolean verificarContrase?a(String contrase?a) {
+	public boolean verificarContraseña(String contraseña) {
 	
 	}
+	
+	private String cifrarContraseña(String contraseña) {
+	
+	}
+	
+	public String getCorreo();
 }
