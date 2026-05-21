@@ -11,8 +11,10 @@
 package es.upm.etsisi.poo;
 
 
+import servidor.ExternalLDAP;
 
 public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
+
 	private ExternalLDAP servicioExterno;
     public AdaptadorUPMAuthenticator() {
         this.servicioExterno = new ExternalLDAP();
