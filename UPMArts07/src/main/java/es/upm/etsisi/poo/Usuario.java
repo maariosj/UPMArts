@@ -51,6 +51,7 @@ public abstract class Usuario implements IDatosUsuaio {
 	}
 	
 	private String cifrarContrasena(String contrasena) {
+
 	
 	}
     @Override

@@ -11,10 +11,46 @@
 
 package es.upm.etsisi.poo;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ValidadorNick {
-	private List<String> terminosConflictivos;
-	public boolean validarNick(String nick) {
-	
-	}
+
+    private Set<String> terminosConflictivos;
+
+    public ValidadorNick() {
+        this.terminosConflictivos = new HashSet<>();
+        cargarTerminosConflictivos();
+    }
+
+    private void cargarTerminosConflictivos() {
+        try {
+            FileReader fr = new FileReader("conflictivos.txt");
+            BufferedReader br = new BufferedReader(fr);
+
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                terminosConflictivos.add(linea.trim().toLowerCase());
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            System.err.println("Aviso: No se pudo leer conflictivos.txt: " + e.getMessage());
+        }
+    }
+
+    public boolean validarNick(String nick) {
+        if (nick == null || nick.length() < 4 || nick.length() > 12) {
+            return false;
+        }
+        for (char c : nick.toCharArray()) {
+            if (!Character.isLetterOrDigit(c)) {
+                return false;
+            }
+        }
+        return !terminosConflictivos.contains(nick.toLowerCase());
+    }
 }

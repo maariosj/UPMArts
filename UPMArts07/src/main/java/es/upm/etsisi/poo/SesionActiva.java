@@ -11,32 +11,32 @@
 package es.upm.etsisi.poo;
 
 
-
 private class SesionActiva {
-	private static SesionActiva instancia;
-	private Usuario usuarioActual;
-	private SesionActiva instance;
-	private void SesionActiva() {
-	
-	}
-	
-	public static SesionActiva getInstancia() {
-	
-	}
-	
-	public void setUsuario(Usuario usuario) {
-	
-	}
-	
-	public Usuario getUsuario() {
-	
-	}
-	
-	public void cerrarSesion() {
-	
-	}
-	
-	public SesionActiva Instance() {
-	
-	}
+    private static SesionActiva instancia;
+    private Usuario usuarioActual;
+    private SesionActiva instance;
+
+    private void SesionActiva() {
+
+    }
+
+    public static SesionActiva getInstancia() {
+
+    }
+
+    public void setUsuario(Usuario usuario) {
+
+    }
+
+    public Usuario getUsuario() {
+
+    }
+
+    public void cerrarSesion() {
+
+    }
+
+    public SesionActiva Instance() {
+
+    }
 }
