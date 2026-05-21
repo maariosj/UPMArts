@@ -12,7 +12,7 @@ package es.upm.etsisi.poo;
 
 
 
-public interface IControladorUsuario {
+public interface IControladorUsuarios {
 	public boolean login(String email, String pass);
 	public boolean registrarParticipante(HashMap datos);
 	public boolean registrarInstructor(HashMap datos, HashMap pago);
