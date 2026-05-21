@@ -11,22 +11,131 @@
 
 package es.upm.etsisi.poo;
 
+import java.util.HashMap;
+import java.util.Scanner;
 
+/**
+ * Vista CLI para alta y acceso de usuarios.
+ *
+ * Responsabilidad: pedir datos, mostrar mensajes y llamar al controlador.
+ * No debe crear usuarios, validar reglas de negocio ni acceder a ficheros/DAOs.
+ */
 public class VistaUsuariosCLI {
-	private IControladorUsuarios controlador;
-	public void mostrarMenuPrincipal() {
-	
-	}
-	
-	public HashMap pedirDatosRegistro() {
-	
-	}
-	
-	public HashMap pedirDatosPago() {
-	
-	}
-	
-	public void mostrarMensaje(String mensaje) {
-	
-	}
+    private final IControladorUsuarios controlador;
+    private final Scanner scanner;
+
+    public VistaUsuariosCLI(IControladorUsuarios controlador) {
+        this.controlador = controlador;
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void mostrarMenuPrincipal() {
+        boolean volver = false;
+
+        while (!volver) {
+            System.out.println();
+            System.out.println("--- Gestion de usuarios ---");
+            System.out.println("1 Iniciar sesion");
+            System.out.println("2 Registrar participante");
+            System.out.println("3 Registrar instructor");
+            System.out.println("0 Volver");
+            System.out.print("Selecciona una opcion: ");
+
+            String opcion = scanner.nextLine().trim();
+
+            switch (opcion) {
+                case "1":
+                    procesarLogin();
+                    break;
+                case "2":
+                    procesarRegistroParticipante();
+                    break;
+                case "3":
+                    procesarRegistroInstructor();
+                    break;
+                case "0":
+                    volver = true;
+                    break;
+                default:
+                    mostrarMensaje("Opcion no valida. Intentalo de nuevo.");
+            }
+        }
+    }
+
+    public HashMap<String, String> pedirDatosRegistro() {
+        HashMap<String, String> datos = new HashMap<>();
+
+        datos.put("nombre", pedirTexto("Nombre: "));
+        datos.put("apellidos", pedirTexto("Apellidos: "));
+        datos.put("nick", pedirTexto("Nick: "));
+        datos.put("email", pedirTexto("Email UPM: "));
+        datos.put("contrasena", pedirTexto("Contrasena: "));
+        datos.put("disciplinaPrincipal", pedirTexto("Disciplina principal: "));
+
+        return datos;
+    }
+
+    public HashMap<String, String> pedirDatosPago() {
+        HashMap<String, String> pago = new HashMap<>();
+
+        pago.put("titular", pedirTexto("Titular de la tarjeta: "));
+        pago.put("numeroTarjeta", pedirTexto("Numero de tarjeta: "));
+        pago.put("fechaCaducidad", pedirTexto("Fecha de caducidad MM/AA: "));
+        pago.put("cvv", pedirTexto("CVV: "));
+
+        return pago;
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
+    }
+
+    private void procesarLogin() {
+        String email = pedirTexto("Email: ");
+        String contrasena = pedirTexto("Contrasena: ");
+
+        boolean correcto = controlador.login(email, contrasena);
+
+        if (correcto) {
+            mostrarMensaje("Sesion iniciada correctamente.");
+        } else {
+            mostrarMensaje("No se pudo iniciar sesion. Revisa email y contrasena.");
+        }
+    }
+
+    private void procesarRegistroParticipante() {
+        HashMap<String, String> datos = pedirDatosRegistro();
+        boolean correcto = controlador.registrarParticipante(datos);
+
+        if (correcto) {
+            mostrarMensaje("Participante registrado correctamente.");
+        } else {
+            mostrarMensaje("No se pudo registrar el participante.");
+        }
+    }
+
+    private void procesarRegistroInstructor() {
+        HashMap<String, String> datos = pedirDatosRegistro();
+        HashMap<String, String> pago = pedirDatosPago();
+        boolean correcto = controlador.registrarInstructor(datos, pago);
+
+        if (correcto) {
+            mostrarMensaje("Instructor registrado correctamente.");
+        } else {
+            mostrarMensaje("No se pudo registrar el instructor.");
+        }
+    }
+
+    private String pedirTexto(String mensaje) {
+        String texto;
+        do {
+            System.out.print(mensaje);
+            texto = scanner.nextLine().trim();
+            if (texto.isEmpty()) {
+                mostrarMensaje("El campo no puede estar vacio.");
+            }
+        } while (texto.isEmpty());
+
+        return texto;
+    }
 }

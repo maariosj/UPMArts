@@ -12,7 +12,7 @@
 package es.upm.etsisi.poo;
 import java.util.HashMap;
 
-public class ControladorUsuarios implements IControladorUsuario {
+public class ControladorUsuarios implements IControladorUsuarios {
 	private IUsuarioDAO dao;
 	private IAdaptadorAutenticador autenticador;
 	public boolean registrarParticipante(HashMap datos) {
