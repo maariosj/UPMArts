@@ -16,5 +16,5 @@ public interface IUsuarioDAO {
 	public boolean guardarUsuario(Usuario u);
 	public Usuario buscarPorEmail(String email);
 	public boolean existeNick(String nick);
-	public boolean actualizarUsuario(Strin nick, Usuario u);
+	public boolean actualizarUsuario(String nick, Usuario u);
 }

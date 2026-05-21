@@ -14,7 +14,31 @@ package es.upm.etsisi.poo;
 
 public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
 	private ExternalLDAP servicioExterno;
+    public AdaptadorUPMAuthenticator() {
+        this.servicioExterno = new ExternalLDAP();
+    }
+
 	public RolUPM validarEnUPM(String email) {
+        try{
+            String rolDevueltoPorLibreria = servicioExterno.obtenerRol(email);
+            if (rolDevueltoPorLibreria == null || rolDevueltoPorLibreria.isEmpty()) {
+                return RolUPM.INEXISTENTE;
+            }
+            switch (rolDevueltoPorLibreria.toUpperCase()) {
+                case "ESTUDIANTE":
+                    return RolUPM.ESTUDIANTE;
+                case "PDI":
+                    return RolUPM.PDI;
+                case "PAS":
+                    return RolUPM.PAS;
+                default:
+                    return RolUPM.INEXISTENTE;
+            }
+
+        }catch (Exception e) {
+            System.err.println("Error al comunicar con UPM Authenticator: " + e.getMessage());
+            return RolUPM.INEXISTENTE;
+        }
 	
 	}
 	

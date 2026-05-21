@@ -12,7 +12,7 @@
 package es.upm.etsisi.poo;
 
 
-public abstract class Usuario implements IDatosUsuaio {
+public abstract class Usuario implements IDatosUsuario {
 	private String nick;
 	private String nombre;
 	private String correo;
