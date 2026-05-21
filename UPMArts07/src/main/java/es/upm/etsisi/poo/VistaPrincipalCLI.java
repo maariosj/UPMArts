@@ -2,12 +2,7 @@ package es.upm.etsisi.poo;
 
 import java.util.Scanner;
 
-/**
- * Vista principal de la aplicacion CLI.
- *
- * Responsabilidad: mostrar opciones generales y delegar en vistas especificas.
- * No conoce DAOs, modelos ni clases de persistencia.
- */
+
 public class VistaPrincipalCLI {
     private final Scanner scanner;
     private final VistaUsuariosCLI vistaUsuarios;
