@@ -15,18 +15,23 @@ import servidor.ExternalLDAP;
 
 public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
 
-	private ExternalLDAP servicioExterno;
+    private ExternalLDAP externalLDAP;
+
     public AdaptadorUPMAuthenticator() {
-        this.servicioExterno = new ExternalLDAP();
+        this.externalLDAP = new ExternalLDAP();
     }
 
-	public RolUPM validarEnUPM(String email) {
-        try{
-            String rolDevueltoPorLibreria = servicioExterno.obtenerRol(email);
-            if (rolDevueltoPorLibreria == null || rolDevueltoPorLibreria.isEmpty()) {
+    @Override
+    public RolUPM validarEnUPM(String email) {
+        try {
+
+            String rolDevuelto = externalLDAP.;
+
+            if (rolDevuelto == null || rolDevuelto.trim().isEmpty()) {
                 return RolUPM.INEXISTENTE;
             }
-            switch (rolDevueltoPorLibreria.toUpperCase()) {
+
+            switch (rolDevuelto.toUpperCase()) {
                 case "ESTUDIANTE":
                     return RolUPM.ESTUDIANTE;
                 case "PDI":
@@ -37,12 +42,15 @@ public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
                     return RolUPM.INEXISTENTE;
             }
 
-        }catch (Exception e) {
-            System.err.println("Error al comunicar con UPM Authenticator: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error interno al comprobar en UPM Authenticator: " + e.getMessage());
             return RolUPM.INEXISTENTE;
         }
-	
-	}
-	
-	public RolUPM validarEnUPM(String email);
+    }
+    }
+
+
+}
+
+public RolUPM validarEnUPM(String email);
 }
