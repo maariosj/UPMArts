@@ -3,7 +3,7 @@ package es.upm.etsisi.poo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Participante  extends Usuario{
+public abstract class Participante extends Usuario {
     private String dni;
     private String tarjetaCredito;
     private List<PreferenciaArtistica> preferencias;
