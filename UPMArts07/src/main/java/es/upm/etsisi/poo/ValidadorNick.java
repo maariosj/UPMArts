@@ -13,7 +13,6 @@ package es.upm.etsisi.poo;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +27,7 @@ public class ValidadorNick {
 
     private void cargarTerminosConflictivos() {
         try {
+
             FileReader fr = new FileReader("conflictivos.txt");
             BufferedReader br = new BufferedReader(fr);
 
@@ -38,7 +38,7 @@ public class ValidadorNick {
             br.close();
             fr.close();
         } catch (Exception e) {
-            System.err.println("Aviso: No se pudo leer conflictivos.txt: " + e.getMessage());
+            System.err.println("Aviso: No se pudo leer el archivo de nicks: " + e.getMessage());
         }
     }
 

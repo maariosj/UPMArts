@@ -10,29 +10,22 @@
 //
 package es.upm.etsisi.poo;
 
+import servidor.ObtencionDeRol;
+import servidor.UPMUsers;
 
-import servidor.ExternalLDAP;
 
 public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
-
-    private ExternalLDAP externalLDAP;
-
-    public AdaptadorUPMAuthenticator() {
-        this.externalLDAP = new ExternalLDAP();
-    }
 
     @Override
     public RolUPM validarEnUPM(String email) {
         try {
-
-            String rolDevuelto = externalLDAP.;
-
-            if (rolDevuelto == null || rolDevuelto.trim().isEmpty()) {
+            UPMUsers rol = ObtencionDeRol.get_UPM_AccountRol(email);
+            if (rol == null) {
                 return RolUPM.INEXISTENTE;
             }
 
-            switch (rolDevuelto.toUpperCase()) {
-                case "ESTUDIANTE":
+            switch (rol.name()) {
+                case "ALUMNO":
                     return RolUPM.ESTUDIANTE;
                 case "PDI":
                     return RolUPM.PDI;
@@ -43,14 +36,9 @@ public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
             }
 
         } catch (Exception e) {
-            System.err.println("Error interno al comprobar en UPM Authenticator: " + e.getMessage());
+            System.err.println("Error de conexión con UPM Authenticator: " + e.getMessage());
             return RolUPM.INEXISTENTE;
         }
     }
-    }
 
-
-}
-
-public RolUPM validarEnUPM(String email);
 }

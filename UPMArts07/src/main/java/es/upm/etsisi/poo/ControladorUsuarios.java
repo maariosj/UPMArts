@@ -10,38 +10,107 @@
 //
 
 package es.upm.etsisi.poo;
+
 import java.util.HashMap;
 
 public class ControladorUsuarios implements IControladorUsuarios {
-	private IUsuarioDAO dao;
-	private IAdaptadorAutenticador autenticador;
-	public boolean registrarParticipante(HashMap datos) {
-	
-	}
-	
-	public boolean registrarInstructor(HashMap datos) {
-	
-	}
-	
-	public boolean login(String email, String contrasena) {
-	
-	}
-	
-	public boolean validarNick(String nick) {
-	
-	}
-	
-	public boolean validarContrasena(String contrasena) {
-	
-	}
-	
-	public RolUPM determinarTipoMiembroUPM(String email) {
-	
-	}
-	
-	public boolean login(String email, String pass);
+    private IUsuarioDAO dao;
+    private IAdaptadorAutenticador autenticador;
+    private ValidadorNick validadorNick;
 
-	public boolean registrarParticipante(HashMap datos);
+    public ControladorUsuarios(IUsuarioDAO dao, IAdaptadorAutenticador autenticador) {
+        this.dao = dao;
+        this.autenticador = autenticador;
+        this.validadorNick = new ValidadorNick();
+    }
 
-	public boolean registrarInstructor(HashMap datos, HashMap pago);
+
+    @Override
+    public boolean registrarParticipante(HashMap datos) {
+        String nick = (String) datos.get("nick");
+        String nombre = (String) datos.get("nombre");
+        String correo = (String) datos.get("correo");
+        String contrasena = (String) datos.get("contrasena");
+        String dni = (String) datos.get("dni");
+        String tarjeta = (String) datos.get("tarjetaCredito");
+        if (!validarNick(nick) || !validarContrasena(contrasena)) {
+            return false;
+        }
+        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
+            return false; // Usuario ya registrado
+        }
+        Usuario nuevoParticipante = null;
+        if (correo.endsWith(".upm.es")) {
+            RolUPM rol = determinarTipoMiembroUPM(correo);
+            if (rol == RolUPM.ESTUDIANTE) {
+                String matricula = (String) datos.get("matricula");
+                nuevoParticipante = new EstudianteUPM(nick, nombre, correo, contrasena, dni, tarjeta, matricula);
+            } else if (rol == RolUPM.PDI || rol == RolUPM.PAS) {
+                int antiguedad = Integer.parseInt((String) datos.get("antiguedad"));
+                nuevoParticipante = new PersonalUPM(nick, nombre, correo, contrasena, dni, tarjeta, antiguedad);
+            } else {
+                return false;
+            }
+        } else {
+            nuevoParticipante = new ParticipanteExterno(nick, nombre, correo, contrasena, dni, tarjeta);
+        }
+        return dao.guardarUsuario(nuevoParticipante);
+    }
+
+    @Override
+    public boolean registrarInstructor(HashMap datos, HashMap pago) {
+        String nick = (String) datos.get("nick");
+        String nombre = (String) datos.get("nombre");
+        String correo = (String) datos.get("correo");
+        String contrasena = (String) datos.get("contrasena");
+        String dni = (String) datos.get("dni");
+        String iban = (String) pago.get("iban");
+        if (!validarNick(nick) || !validarContrasena(contrasena)) {
+            return false;
+        }
+        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
+            return false;
+        }
+        Usuario nuevoInstructor = new Instructor(nick, nombre, correo, contrasena, dni, iban);
+        return dao.guardarUsuario(nuevoInstructor);
+    }
+
+    @Override
+    public boolean login(String email, String contrasena) {
+        Usuario usuario = dao.buscarPorEmail(email);
+        if (usuario != null && usuario.verificarContrasena(contrasena)) {
+            SesionActiva.getInstancia().setUsuario(usuario);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validarNick(String nick) {
+        return validadorNick.validarNick(nick);
+    }
+
+    public boolean validarContrasena(String contrasena) {
+        if (contrasena == null || contrasena.length() < 12) {
+            return false;
+        }
+        boolean tieneMayus = false;
+        boolean tieneMinus = false;
+        boolean tieneNum = false;
+
+        for (char c : contrasena.toCharArray()) {
+            if (Character.isUpperCase(c)){
+                tieneMayus = true;
+            } else if (Character.isLowerCase(c)){
+                tieneMinus = true;
+            } else if (Character.isDigit(c)){
+                tieneNum = true;
+            }
+        }
+        return tieneMayus && tieneMinus && tieneNum;
+    }
+
+
+    public RolUPM determinarTipoMiembroUPM(String email) {
+        return autenticador.validarEnUPM(email);
+    }
 }
