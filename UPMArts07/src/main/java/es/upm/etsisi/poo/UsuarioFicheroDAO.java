@@ -11,38 +11,177 @@
 
 package es.upm.etsisi.poo;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioFicheroDAO implements IUsuarioDAO {
-	private String rutaFichero;
-	private String serializar(Usuario u) {
-	
-	}
-	
-	public Usuario deserializar(String linea) {
-	
-	}
-	
-	public boolean guardarUsuario(Usuario u) {
-	
-	}
-	
-	public Usuario buscarPorEmail(String email) {
-	
-	}
-	
-	public boolean existeNick(String nick) {
-	
-	}
-	
-	public boolean eliminarUsuario(String nick) {
-	
-	}
-	
-	public boolean guardarUsuario(Usuario u);
-	
-	public Usuario buscarPorEmail(String email);
-	
-	public boolean existeNick(String nick);
-	
-	public boolean actualizarUsuario(String nick, Usuario u);
+
+    private String rutaFichero;
+
+    public UsuarioFicheroDAO(String rutaFichero) {
+        this.rutaFichero = rutaFichero;
+    }
+
+    private String serializar(Usuario u) {
+        return u.getClass().getSimpleName() + ";" +
+                u.getNick() + ";" +
+                u.getNombre() + ";" +
+                u.getCorreo() + ";" +
+                u.getContrasenaCifrada();
+    }
+
+    public Usuario deserializar(String linea) {
+        String[] partes = linea.split(";");
+
+        if (partes.length < 5) {
+            return null;
+        }
+
+        String tipo = partes[0];
+        String nick = partes[1];
+        String nombre = partes[2];
+        String correo = partes[3];
+        String contrasenaCifrada = partes[4];
+
+        if (tipo.equals("Participante")) {
+            return new Participante(nick, nombre, correo, contrasenaCifrada, true);
+        }
+
+        if (tipo.equals("Instructor")) {
+            return new Instructor(nick, nombre, correo, contrasenaCifrada, true);
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean guardarUsuario(Usuario u) {
+        if (u == null || existeNick(u.getNick()) || buscarPorEmail(u.getCorreo()) != null) {
+            return false;
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaFichero, true))) {
+            bw.write(serializar(u));
+            bw.newLine();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Usuario buscarPorEmail(String email) {
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                Usuario u = deserializar(linea);
+
+                if (u != null && u.getCorreo().equals(email)) {
+                    return u;
+                }
+            }
+
+        } catch (IOException e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean existeNick(String nick) {
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                Usuario u = deserializar(linea);
+
+                if (u != null && u.getNick().equals(nick)) {
+                    return true;
+                }
+            }
+
+        } catch (IOException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean eliminarUsuario(String nick) {
+        List<Usuario> usuarios = new ArrayList<>();
+        boolean encontrado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                Usuario u = deserializar(linea);
+
+                if (u != null) {
+                    if (u.getNick().equals(nick)) {
+                        encontrado = true;
+                    } else {
+                        usuarios.add(u);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            return false;
+        }
+
+        if (!encontrado) {
+            return false;
+        }
+
+        return sobrescribirFichero(usuarios);
+    }
+
+    @Override
+    public boolean actualizarUsuario(String nick, Usuario usuarioNuevo) {
+        List<Usuario> usuarios = new ArrayList<>();
+        boolean encontrado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaFichero))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                Usuario u = deserializar(linea);
+
+                if (u != null) {
+                    if (u.getNick().equals(nick)) {
+                        usuarios.add(usuarioNuevo);
+                        encontrado = true;
+                    } else {
+                        usuarios.add(u);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            return false;
+        }
+
+        if (!encontrado) {
+            return false;
+        }
+
+        return sobrescribirFichero(usuarios);
+    }
+
+    private boolean sobrescribirFichero(List<Usuario> usuarios) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaFichero, false))) {
+            for (Usuario u : usuarios) {
+                bw.write(serializar(u));
+                bw.newLine();
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 }

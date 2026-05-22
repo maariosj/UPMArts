@@ -18,6 +18,8 @@ public abstract class Usuario implements IDatosUsuario {
 	private String correo;
 	private String contrasenaCifrada;
 
+
+
     public Usuario(String nick, String nombre, String correo, String contrasena) {
         this.nick = nick;
         this.nombre = nombre;
@@ -38,6 +40,9 @@ public abstract class Usuario implements IDatosUsuario {
         return this.correo;
 	
 	}
+    public String getContrasenaCifrada() {
+        return contrasenaCifrada;
+    }
 	
 	public void setContrasena(String nuevaContrasena) {
         this.contrasenaCifrada = nuevaContrasena;
@@ -52,11 +57,18 @@ public abstract class Usuario implements IDatosUsuario {
 	
 	private String cifrarContrasena(String contrasena) {
 
-	
-	}
+
+        return contrasena;
+    }
+
     @Override
     public String toString() {
         return nick + ";" + nombre + ";" + correo + ";" + contrasenaCifrada;
     }
+    protected void setContrasenaCifradaDirectamente(String contrasenaCifrada) {
+        this.contrasenaCifrada = contrasenaCifrada;
+    }
+
+
 	
 }

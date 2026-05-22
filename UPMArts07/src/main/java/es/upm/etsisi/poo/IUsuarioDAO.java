@@ -12,10 +12,16 @@ package es.upm.etsisi.poo;
 
 
 
+
 public interface IUsuarioDAO {
-	public boolean guardarUsuario(Usuario u);
-	public Usuario buscarPorEmail(String email);
-	public boolean existeNick(String nick);
-	public boolean actualizarUsuario(String nick, Usuario u);
-    public boolean eliminarUsuario(String email);
+
+    boolean guardarUsuario(Usuario u);
+
+    Usuario buscarPorEmail(String email);
+
+    boolean existeNick(String nick);
+
+    boolean eliminarUsuario(String nick);
+
+    boolean actualizarUsuario(String nick, Usuario u);
 }

@@ -9,6 +9,10 @@ public class Instructor extends Usuario {
         this.dni = dni;
         this.iban = iban;
     }
+    public Instructor(String nick, String nombre, String correo, String contrasenaCifrada, boolean yaCifrada) {
+        super(nick, nombre, correo, contrasenaCifrada);
+        setContrasenaCifradaDirectamente(contrasenaCifrada);
+    }
     public String getDni() {
         return dni;
     }
@@ -25,4 +29,5 @@ public class Instructor extends Usuario {
     public String toString() {
         return "INSTRUCTOR;" + super.toString() + ";" + dni + ";" + iban;
     }
+
 }
