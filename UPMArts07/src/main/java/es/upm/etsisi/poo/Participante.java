@@ -2,7 +2,6 @@ package es.upm.etsisi.poo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 
 public abstract class Participante  extends Usuario{
     private String dni;

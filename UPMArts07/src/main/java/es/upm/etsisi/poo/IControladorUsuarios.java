@@ -14,7 +14,13 @@ package es.upm.etsisi.poo;
 import java.util.HashMap;
 
 public interface IControladorUsuarios {
-	public boolean login(String email, String pass);
-	public boolean registrarParticipante(HashMap<String, String> datos);
-	public boolean registrarInstructor(HashMap datos, HashMap pago);
+    boolean login(String email, String pass);
+
+    boolean registrarParticipante(HashMap<String, String> datos);
+
+    boolean registrarInstructor(HashMap datos, HashMap pago);
+
+    boolean validarNick(String nick);
+
+    boolean validarContrasena(String contrasena);
 }
