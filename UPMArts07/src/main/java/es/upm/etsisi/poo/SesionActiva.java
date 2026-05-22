@@ -10,33 +10,36 @@
 //
 package es.upm.etsisi.poo;
 
+public class SesionActiva {
 
-private class SesionActiva {
     private static SesionActiva instancia;
     private Usuario usuarioActual;
-    private SesionActiva instance;
 
-    private void SesionActiva() {
-
+    private SesionActiva() {
+        this.usuarioActual = null;
     }
 
     public static SesionActiva getInstancia() {
+        if (instancia == null) {
+            instancia = new SesionActiva();
+        }
 
+        return instancia;
     }
 
     public void setUsuario(Usuario usuario) {
-
+        this.usuarioActual = usuario;
     }
 
     public Usuario getUsuario() {
-
+        return usuarioActual;
     }
 
     public void cerrarSesion() {
-
+        this.usuarioActual = null;
     }
 
     public SesionActiva Instance() {
-
+        return getInstancia();
     }
 }
