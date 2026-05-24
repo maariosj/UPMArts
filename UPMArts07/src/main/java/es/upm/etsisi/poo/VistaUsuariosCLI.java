@@ -68,7 +68,7 @@ public class VistaUsuariosCLI {
         datos.put("nombre", pedirTexto("Nombre: "));
         datos.put("apellidos", pedirTexto("Apellidos: "));
         datos.put("nick", pedirTexto("Nick: "));
-        datos.put("email", pedirTexto("Email UPM: "));
+        datos.put("correo", pedirTexto("Email UPM: "));
         datos.put("contrasena", pedirTexto("Contrasena: "));
         datos.put("disciplinaPrincipal", pedirTexto("Disciplina principal: "));
 
