@@ -40,7 +40,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
             return false; // Usuario ya registrado
         }
         Usuario nuevoParticipante = null;
-        if (correo.endsWith(".upm.es")) {
+        if (correo.endsWith("upm.es")) {
             RolUPM rol = determinarTipoMiembroUPM(correo);
             if (rol == RolUPM.ESTUDIANTE) {
                 String matricula = (String) datos.get("matricula");
