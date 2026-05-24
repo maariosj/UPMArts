@@ -55,10 +55,10 @@ public abstract class Usuario implements IDatosUsuario {
 	
 	}
 	
-	private String cifrarContrasena(String contrasena) {
+	private String cifrarContrasena(String contrasenia) {
 
 
-        return contrasena;
+        return contrasenia;
     }
 
     @Override

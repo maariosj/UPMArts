@@ -14,7 +14,12 @@ package es.upm.etsisi.poo;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
+/**
+ * Vista CLI para alta y acceso de usuarios.
+ *
+ * Responsabilidad: pedir datos, mostrar mensajes y llamar al controlador.
+ * No debe crear usuarios, validar reglas de negocio ni acceder a ficheros/DAOs.
+ */
 public class VistaUsuariosCLI {
     private final IControladorUsuarios controlador;
     private final Scanner scanner;

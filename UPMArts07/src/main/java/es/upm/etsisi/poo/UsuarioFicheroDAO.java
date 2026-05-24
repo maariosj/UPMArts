@@ -8,8 +8,25 @@ public class UsuarioFicheroDAO implements IUsuarioDAO {
 
     private String rutaFichero;
 
+    public UsuarioFicheroDAO() {
+        this.rutaFichero = "usuarios.txt";
+        asegurarExistenciaDeFichero();
+    }
+
     public UsuarioFicheroDAO(String rutaFichero) {
         this.rutaFichero = rutaFichero;
+        asegurarExistenciaDeFichero();
+    }
+
+    private void asegurarExistenciaDeFichero() {
+        File archivo = new File(this.rutaFichero);
+        if (!archivo.exists()) {
+            try {
+                archivo.createNewFile();
+            } catch (IOException e) {
+                System.err.println("Error crítico: No se pudo crear el almacén de datos de usuarios: " + e.getMessage());
+            }
+        }
     }
 
     private String serializar(Usuario u) {
