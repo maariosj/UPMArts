@@ -28,7 +28,7 @@ public class ValidadorNick {
     private void cargarTerminosConflictivos() {
         try {
 
-            FileReader fr = new FileReader("conflictivos.txt");
+            FileReader fr = new FileReader("conflictivos");
             BufferedReader br = new BufferedReader(fr);
 
             String linea;
