@@ -39,6 +39,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
         if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
             return false; // Usuario ya registrado
         }
+
         Usuario nuevoParticipante = null;
         if (correo.endsWith("upm.es")) {
             RolUPM rol = determinarTipoMiembroUPM(correo);
