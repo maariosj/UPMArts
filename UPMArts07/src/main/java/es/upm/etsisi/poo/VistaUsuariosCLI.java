@@ -62,6 +62,7 @@ public class VistaUsuariosCLI {
         }
     }
 
+    /*
     public HashMap<String, String> pedirDatosRegistro() {
         HashMap<String, String> datos = new HashMap<>();
 
@@ -71,6 +72,21 @@ public class VistaUsuariosCLI {
         datos.put("correo", pedirTexto("Email UPM: "));
         datos.put("contrasena", pedirTexto("Contrasena: "));
         datos.put("disciplinaPrincipal", pedirTexto("Disciplina principal: "));
+
+        return datos;
+    }
+     */
+    public HashMap<String, String> pedirDatosRegistro() {
+        HashMap<String, String> datos = new HashMap<>();
+
+        datos.put("nombre", pedirTexto("Nombre completo: "));
+        datos.put("nick", pedirTexto("Nick (4-12 caracteres): "));
+        datos.put("correo", pedirTexto("Email: "));
+
+        mostrarMensaje("La contraseña debe tener al menos 12 caracteres, incluir una mayúscula, una minúscula y un número.");
+        datos.put("contrasena", pedirTexto("Contraseña: "));
+
+        datos.put("dni", pedirTexto("DNI: "));
 
         return datos;
     }
@@ -98,11 +114,48 @@ public class VistaUsuariosCLI {
 
         if (correcto) {
             mostrarMensaje("Sesion iniciada correctamente.");
+            mostrarMenuSesionIniciada();
         } else {
             mostrarMensaje("No se pudo iniciar sesion. Revisa email y contrasena.");
         }
     }
+    private void mostrarMenuSesionIniciada() {
+        boolean cerrarSesion = false;
 
+        while (!cerrarSesion) {
+            System.out.println();
+            System.out.println("--- Panel de Usuario ---");
+            // no hay que implementarlo, es para que quede bonito :)
+            System.out.println("1 Ver mi perfil (proximamente)");
+            // no hay que implementarlo, es para que quede bonito :)
+            System.out.println("2 Apuntarse a actividad (proximamente)");
+            System.out.println("0 Cerrar sesion");
+            System.out.print("Selecciona una opcion: ");
+
+            String opcion = scanner.nextLine().trim();
+
+            switch (opcion) {
+                case "1":
+                    // no hay que implementarlo, es para que quede bonito :)
+                    mostrarMensaje("Funcionalidad en desarrollo...");
+                    break;
+                case "2":
+                    // no hay que implementarlo, es para que quede bonito :)
+                    mostrarMensaje("Funcionalidad en desarrollo...");
+                    break;
+                case "0":
+                    cerrarSesion = true;
+                    mostrarMensaje("Cerrando sesion...");
+                    // "olvidamos" al usuario que estaba conectado
+                    SesionActiva.getInstancia().cerrarSesion();
+                    break;
+                default:
+                    mostrarMensaje("Opcion no valida.");
+            }
+        }
+    }
+
+    /*
     private void procesarRegistroParticipante() {
         HashMap<String, String> datos = pedirDatosRegistro();
         boolean correcto = controlador.registrarParticipante(datos);
@@ -113,7 +166,38 @@ public class VistaUsuariosCLI {
             mostrarMensaje("No se pudo registrar el participante.");
         }
     }
+     */
+    private void procesarRegistroParticipante() {
+        HashMap<String, String> datos = pedirDatosRegistro();
 
+        // llamamos a pedirDatosPago()
+        HashMap<String, String> pago = pedirDatosPago();
+
+        // juntamos todo en la clave tarjetaCredito que es la única que lee el Controlador
+        String tarjetaCompleta = pago.get("numeroTarjeta") + " - " + pago.get("titular");
+        datos.put("tarjetaCredito", tarjetaCompleta);
+
+        // si es correo institucional, pedimos los datos específicos de la UPM
+        if (datos.get("correo").endsWith("upm.es")) {
+            mostrarMensaje("Se ha detectado un correo institucional UPM.");
+            String tipo = pedirTexto("¿Eres Estudiante (E) o Personal (P)?: ");
+
+            if (tipo.equalsIgnoreCase("E")) {
+                datos.put("matricula", pedirTexto("Numero de matricula: "));
+            } else {
+                datos.put("antiguedad", pedirTexto("Anios de antiguedad: "));
+            }
+        }
+
+        boolean correcto = controlador.registrarParticipante(datos);
+
+        if (correcto) {
+            mostrarMensaje("Participante registrado correctamente.");
+        } else {
+            mostrarMensaje("Error: No se pudo registrar. Revisa el formato de la contraseña, que el nick no contenga palabras prohibidas o que el correo no este ya en uso.");
+        }
+    }
+    /*
     private void procesarRegistroInstructor() {
         HashMap<String, String> datos = pedirDatosRegistro();
         HashMap<String, String> pago = pedirDatosPago();
@@ -123,6 +207,22 @@ public class VistaUsuariosCLI {
             mostrarMensaje("Instructor registrado correctamente.");
         } else {
             mostrarMensaje("No se pudo registrar el instructor.");
+        }
+    }
+     */
+    private void procesarRegistroInstructor() {
+        HashMap<String, String> datos = pedirDatosRegistro(); // pedimos nombre, nick, correo, pass y DNI
+
+        HashMap<String, String> pago = new HashMap<>();
+        // pedimos el IBAN en lugar de la tarjeta de crédito
+        pago.put("iban", pedirTexto("IBAN (para el ingreso de honorarios): "));
+
+        boolean correcto = controlador.registrarInstructor(datos, pago);
+
+        if (correcto) {
+            mostrarMensaje("Instructor registrado correctamente.");
+        } else {
+            mostrarMensaje("Error: No se pudo registrar el instructor. Revisa los datos introducidos.");
         }
     }
 

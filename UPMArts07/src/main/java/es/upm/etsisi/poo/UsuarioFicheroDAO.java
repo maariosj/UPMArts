@@ -33,6 +33,7 @@ public class UsuarioFicheroDAO implements IUsuarioDAO {
         return u.toString();
     }
 
+    /*
     public Usuario deserializar(String linea) {
         String[] partes = linea.split(";");
 
@@ -88,6 +89,58 @@ public class UsuarioFicheroDAO implements IUsuarioDAO {
             instructor.setIban(iban);
 
             return instructor;
+        }
+
+        return null;
+    }
+     */
+
+    public Usuario deserializar(String linea) {
+        String[] partes = linea.split(";");
+
+        if (partes.length < 5) {
+            return null;
+        }
+
+        String tipo = partes[0];
+        String nick = partes[1];
+        String nombre = partes[2];
+        String correo = partes[3];
+        String contrasenaCifrada = partes[4];
+
+        switch (tipo) {
+            case "EXTERNO":
+                if (partes.length >= 7) {
+                    return new ParticipanteExterno(nick, nombre, correo, contrasenaCifrada, true, partes[5], partes[6]);
+                }
+                break;
+
+            case "ESTUDIANTE":
+                if (partes.length >= 8) {
+                    return new EstudianteUPM(nick, nombre, correo, contrasenaCifrada, true, partes[5], partes[6], partes[7]);
+                }
+                break;
+
+            case "PERSONAL":
+                if (partes.length >= 8) {
+                    return new PersonalUPM(nick, nombre, correo, contrasenaCifrada, true, partes[5], partes[6], Integer.parseInt(partes[7]));
+                }
+                break;
+
+            case "INSTRUCTOR":
+                if (partes.length >= 7) {
+                    Instructor instructor = new Instructor(nick, nombre, correo, contrasenaCifrada, true);
+                    instructor.setDni(partes[5]);
+                    instructor.setIban(partes[6]);
+                    return instructor;
+                }
+                break;
+
+            case "ADMINISTRADOR":
+                if (partes.length >= 6) {
+                    return new Administrador(nick, nombre, correo, contrasenaCifrada, true, partes[5]);
+                }
+                break;
         }
 
         return null;

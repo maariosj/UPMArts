@@ -24,7 +24,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
         this.validadorNick = new ValidadorNick();
     }
 
-
+    /*
     @Override
     public boolean registrarParticipante(HashMap datos) {
         String nick = (String) datos.get("nick");
@@ -57,7 +57,77 @@ public class ControladorUsuarios implements IControladorUsuarios {
         }
         return dao.guardarUsuario(nuevoParticipante);
     }
+     */
+    @Override
+    public boolean registrarParticipante(HashMap datos) {
+        String nick = (String) datos.get("nick");
+        String nombre = (String) datos.get("nombre");
+        String correo = (String) datos.get("correo");
+        String contrasena = (String) datos.get("contrasena");
+        String dni = (String) datos.get("dni");
+        String tarjeta = (String) datos.get("tarjetaCredito");
 
+        if (!validarNick(nick) || !validarContrasena(contrasena)) {
+            return false;
+        }
+        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
+            return false; // Usuario ya registrado
+        }
+
+        Usuario nuevoParticipante = null;
+        if (correo.endsWith("upm.es")) {
+            RolUPM rol = determinarTipoMiembroUPM(correo);
+            if (rol == RolUPM.ESTUDIANTE) {
+                String matricula = (String) datos.get("matricula");
+                nuevoParticipante = new EstudianteUPM(nick, nombre, correo, contrasena, dni, tarjeta, matricula);
+            } else if (rol == RolUPM.PDI || rol == RolUPM.PAS) {
+                int antiguedad = 0;
+                try {
+                    String antiStr = (String) datos.get("antiguedad");
+                    if (antiStr != null && !antiStr.isEmpty()) {
+                        antiguedad = Integer.parseInt(antiStr);
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+
+                nuevoParticipante = new PersonalUPM(nick, nombre, correo, contrasena, dni, tarjeta, antiguedad);
+            } else {
+                return false;
+            }
+        } else {
+            nuevoParticipante = new ParticipanteExterno(nick, nombre, correo, contrasena, dni, tarjeta);
+        }
+        return dao.guardarUsuario(nuevoParticipante);
+    }
+
+    @Override
+    public boolean registrarInstructor(HashMap datos, HashMap pago) {
+
+        // solo los administradores pueden crear instructores.
+        Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
+        if (!(usuarioLogueado instanceof Administrador)) {
+            return false; // si no hay nadie logueado o el que está no es administrador, se deniega el registro.
+        }
+
+        String nick = (String) datos.get("nick");
+        String nombre = (String) datos.get("nombre");
+        String correo = (String) datos.get("correo");
+        String contrasena = (String) datos.get("contrasena");
+        String dni = (String) datos.get("dni");
+        String iban = (String) pago.get("iban");
+
+        if (!validarNick(nick) || !validarContrasena(contrasena)) {
+            return false;
+        }
+        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
+            return false;
+        }
+
+        Usuario nuevoInstructor = new Instructor(nick, nombre, correo, contrasena, dni, iban);
+        return dao.guardarUsuario(nuevoInstructor);
+    }
+    /*
     @Override
     public boolean registrarInstructor(HashMap datos, HashMap pago) {
         String nick = (String) datos.get("nick");
@@ -75,6 +145,8 @@ public class ControladorUsuarios implements IControladorUsuarios {
         Usuario nuevoInstructor = new Instructor(nick, nombre, correo, contrasena, dni, iban);
         return dao.guardarUsuario(nuevoInstructor);
     }
+
+     */
 
     @Override
     public boolean login(String email, String contrasena) {

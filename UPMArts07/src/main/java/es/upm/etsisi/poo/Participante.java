@@ -13,6 +13,16 @@ public abstract class Participante extends Usuario {
         this.tarjetaCredito = tarjetaCredito;
         this.preferencias = new ArrayList<>();
     }
+    public Participante(String nick, String nombre, String correo, String contrasenaCifrada, boolean yaCifrada, String dni, String tarjetaCredito) {
+        super(nick, nombre, correo, contrasenaCifrada);
+        if (yaCifrada) {
+            setContrasenaCifradaDirectamente(contrasenaCifrada);
+        }
+        this.dni = dni;
+        this.tarjetaCredito = tarjetaCredito;
+        this.preferencias = new ArrayList<>();
+    }
+
     public Participante(String nick, String nombre, String correo, String contrasenaCifrada, boolean yaCifrada) {
         super(nick, nombre, correo, contrasenaCifrada);
         setContrasenaCifradaDirectamente(contrasenaCifrada);

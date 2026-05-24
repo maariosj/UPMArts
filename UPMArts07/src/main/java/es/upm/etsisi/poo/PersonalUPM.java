@@ -7,6 +7,12 @@ public class PersonalUPM extends MiembroUPM{
         super(nick, nombre, correo, contrasena, dni, tarjetaCredito);
         this.antiguedad = antiguedad;
     }
+
+    public PersonalUPM(String nick, String nombre, String correo, String contrasenaCifrada, boolean yaCifrada, String dni, String tarjetaCredito, int antiguedad) {
+        super(nick, nombre, correo, contrasenaCifrada, yaCifrada, dni, tarjetaCredito);
+        this.antiguedad = antiguedad;
+    }
+
     public int getAntiguedad() {
         return antiguedad;
     }
