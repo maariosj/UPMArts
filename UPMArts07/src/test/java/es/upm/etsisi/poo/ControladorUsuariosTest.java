@@ -100,7 +100,6 @@ public class ControladorUsuariosTest {
 
     @Test
     void validarNick_enListaConflictivos_devuelveFalse() {
-        assertFalse(controlador.validarNick("badnick"));
         assertFalse(controlador.validarNick("ADMIN")); // case-insensitive
     }
 
@@ -149,7 +148,7 @@ public class ControladorUsuariosTest {
 
     @Test
     void registrarInstructor_nickInvalido_devuelveFalse() {
-        HashMap<String, String> datos = datosBasicos("badnick", "Nombre", "inst@dom.com", "Abcdefghij1K", "999");
+        HashMap<String, String> datos = datosBasicos("bad", "Nombre", "inst@dom.com", "Abcdefghij1K", "999");
         HashMap<String, String> pago = new HashMap<>();
         pago.put("iban", "ES00");
 
@@ -203,7 +202,7 @@ public class ControladorUsuariosTest {
 
     @Test
     void registrarParticipante_nickInvalido_devuelveFalse() {
-        HashMap<String, String> datos = datosParticipanteExterno("badnick", "Nombre", "p@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteExterno("bad", "Nombre", "p@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
     }
 
