@@ -15,12 +15,10 @@ import java.util.HashMap;
 
 public interface IControladorUsuarios {
     boolean login(String email, String pass);
-
     boolean registrarParticipante(HashMap<String, String> datos);
-
     boolean registrarInstructor(HashMap datos, HashMap pago);
-
+    boolean darBajaInstructor(String nick);
+    boolean darBajaParticipante(String nick);
     boolean validarNick(String nick);
-
     boolean validarContrasena(String contrasena);
 }

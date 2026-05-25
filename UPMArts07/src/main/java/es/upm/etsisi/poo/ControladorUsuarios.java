@@ -127,6 +127,25 @@ public class ControladorUsuarios implements IControladorUsuarios {
         Usuario nuevoInstructor = new Instructor(nick, nombre, correo, contrasena, dni, iban);
         return dao.guardarUsuario(nuevoInstructor);
     }
+    @Override
+    public boolean darBajaInstructor(String nick) {
+        Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
+        if (!(usuarioLogueado instanceof Administrador)) {
+            return false;
+        }
+        Usuario objetivo = dao.buscarPorEmail(nick); // buscamos por nick abajo
+        // el DAO elimina por nick directamente
+        return dao.eliminarUsuario(nick);
+    }
+
+    @Override
+    public boolean darBajaParticipante(String nick) {
+        Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
+        if (!(usuarioLogueado instanceof Administrador)) {
+            return false;
+        }
+        return dao.eliminarUsuario(nick);
+    }
     /*
     @Override
     public boolean registrarInstructor(HashMap datos, HashMap pago) {

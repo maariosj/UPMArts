@@ -118,8 +118,6 @@ public class VistaUsuariosCLI {
     }
     private void mostrarMenuSesionIniciada() {
         boolean cerrarSesion = false;
-
-        // comprobamos aquí una sola vez el tipo de usuario
         Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
         boolean esAdmin = usuarioLogueado instanceof Administrador;
 
@@ -129,6 +127,8 @@ public class VistaUsuariosCLI {
             if (esAdmin) {
                 System.out.println("--- Panel de Administrador ---");
                 System.out.println("1 Registrar instructor");
+                System.out.println("2 Dar de baja instructor");
+                System.out.println("3 Dar de baja participante");
             } else {
                 System.out.println("--- Panel de Usuario ---");
                 System.out.println("1 Ver mi perfil (proximamente)");
@@ -143,6 +143,12 @@ public class VistaUsuariosCLI {
                 switch (opcion) {
                     case "1":
                         procesarRegistroInstructor();
+                        break;
+                    case "2":
+                        procesarBajaUsuario("instructor");
+                        break;
+                    case "3":
+                        procesarBajaUsuario("participante");
                         break;
                     case "0":
                         cerrarSesion = true;
@@ -169,6 +175,7 @@ public class VistaUsuariosCLI {
             }
         }
     }
+
     /*
     private void procesarRegistroParticipante() {
         HashMap<String, String> datos = pedirDatosRegistro();
@@ -237,6 +244,22 @@ public class VistaUsuariosCLI {
             mostrarMensaje("Instructor registrado correctamente.");
         } else {
             mostrarMensaje("Error: No se pudo registrar el instructor. Revisa los datos introducidos.");
+        }
+    }
+    private void procesarBajaUsuario(String tipo) {
+        String nick = pedirTexto("Nick del " + tipo + " a dar de baja: ");
+        boolean correcto;
+
+        if (tipo.equals("instructor")) {
+            correcto = controlador.darBajaInstructor(nick);
+        } else {
+            correcto = controlador.darBajaParticipante(nick);
+        }
+
+        if (correcto) {
+            mostrarMensaje("Usuario dado de baja correctamente.");
+        } else {
+            mostrarMensaje("Error: No se pudo dar de baja. Revisa que el nick existe.");
         }
     }
 
