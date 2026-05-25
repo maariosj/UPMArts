@@ -10,16 +10,16 @@
 //
 package es.upm.etsisi.poo;
 
-import servidor.ObtencionDeRol;
-import servidor.UPMUsers;
-
+import servidor.*;
 
 public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
+
 
     @Override
     public RolUPM validarEnUPM(String email) {
         try {
             UPMUsers rol = ObtencionDeRol.get_UPM_AccountRol(email);
+
             if (rol == null) {
                 return RolUPM.INEXISTENTE;
             }

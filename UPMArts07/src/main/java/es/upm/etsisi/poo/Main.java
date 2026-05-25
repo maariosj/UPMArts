@@ -9,6 +9,7 @@ public class Main {
 
         IControladorUsuarios controladorUsuarios = new ControladorUsuarios(dao, autenticador);
 
+
         VistaUsuariosCLI vistaUsuarios = new VistaUsuariosCLI(controladorUsuarios);
 
         VistaPrincipalCLI vistaPrincipal = new VistaPrincipalCLI(vistaUsuarios);
