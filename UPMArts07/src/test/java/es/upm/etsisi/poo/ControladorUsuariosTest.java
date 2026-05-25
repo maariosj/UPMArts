@@ -33,33 +33,39 @@ public class ControladorUsuariosTest {
 
     @Test
     void registrarParticipante_nickInvalido_devuelveFalse() {
-        HashMap<String, String> datos = datosParticipanteExterno("bad", "Nombre", "p@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteExterno("bad", "Nombre", "p@dom.com",
+                "Abcdefghij1K", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
     }
 
     @Test
     void registrarParticipante_contrasenaInvalida_devuelveFalse() {
-        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "p@dom.com", "corta", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "p@dom.com",
+                "corta", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
     }
 
     @Test
     void registrarParticipante_emailDuplicado_devuelveFalse() {
         dao.guardarUsuario(new ParticipanteExterno("a", "b", "dup@dom.com", "Abcdefghij1K", "1", "2"));
-        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "dup@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "dup@dom.com",
+                "Abcdefghij1K", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
     }
 
     @Test
     void registrarParticipante_nickDuplicado_devuelveFalse() {
-        dao.guardarUsuario(new ParticipanteExterno("NickOk", "b", "x@dom.com", "Abcdefghij1K", "1", "2"));
-        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "nuevo@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
+        dao.guardarUsuario(new ParticipanteExterno("NickOk", "b", "x@dom.com", "Abcdefghij1K",
+                "1", "2"));
+        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "nuevo@dom.com",
+                "Abcdefghij1K", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
     }
 
     @Test
     void registrarParticipante_externo_correcto_guardaParticipanteExterno() {
-        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre", "p@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteExterno("NickOk", "Nombre",
+                "p@dom.com", "Abcdefghij1K", "12345678A", "4111111111111111");
         assertTrue(controlador.registrarParticipante(datos));
         Usuario u = dao.buscarPorEmail("p@dom.com");
         assertNotNull(u);
@@ -70,7 +76,8 @@ public class ControladorUsuariosTest {
     void registrarParticipante_upm_estudiante_correcto_guardaEstudianteUPM() {
         autenticador.setRolADevolver(RolUPM.ESTUDIANTE);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "alumno@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre",
+                "alumno@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
         datos.put("matricula", "M1234");
 
         assertTrue(controlador.registrarParticipante(datos));
@@ -81,10 +88,11 @@ public class ControladorUsuariosTest {
     }
 
     @Test
-    void registrarParticipante_upm_pas_o_pdi_correcto_guardaPersonalUPM() {
+    void registrarParticipante_upm_pas_correcto_guardaPersonalUPM() {
         autenticador.setRolADevolver(RolUPM.PAS);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "pas@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre",
+                "pas@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
         datos.put("antiguedad", "3");
 
         assertTrue(controlador.registrarParticipante(datos));
@@ -97,7 +105,8 @@ public class ControladorUsuariosTest {
     void registrarParticipante_upm_pdi_correcto_guardaPersonalUPM() {
         autenticador.setRolADevolver(RolUPM.PDI);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("NickPdi", "Dr. Genio", "profesor@upm.es", "Abcdefghij1K", "87654321B", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickPdi", "Dr. Genio",
+                "profesor@upm.es", "Abcdefghij1K", "87654321B", "4111111111111111");
         datos.put("antiguedad", "5");
 
         assertTrue(controlador.registrarParticipante(datos));
@@ -111,7 +120,8 @@ public class ControladorUsuariosTest {
     void registrarParticipante_upm_estudiante_conDominioAlumnos_correcto() {
         autenticador.setRolADevolver(RolUPM.ESTUDIANTE);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("AlumnoS", "Luis Lopez", "l.lopez@alumnos.upm.es", "Abcdefghij1K", "11223344C", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("AlumnoS", "Luis Lopez",
+                "l.lopez@alumnos.upm.es", "Abcdefghij1K", "11223344C", "4111111111111111");
         datos.put("matricula", "M5678");
 
         assertTrue(controlador.registrarParticipante(datos));
@@ -124,7 +134,8 @@ public class ControladorUsuariosTest {
     void registrarParticipante_upm_rolInexistente_devuelveFalse() {
         autenticador.setRolADevolver(RolUPM.INEXISTENTE);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "x@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "x@upm.es",
+                "Abcdefghij1K", "12345678A", "4111111111111111");
         assertFalse(controlador.registrarParticipante(datos));
         assertNull(dao.buscarPorEmail("x@upm.es"));
     }
@@ -133,7 +144,8 @@ public class ControladorUsuariosTest {
     void registrarParticipante_upm_pas_antiguedadNoNumerica_devuelveFalse() {
         autenticador.setRolADevolver(RolUPM.PDI);
 
-        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "pdi@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "pdi@upm.es",
+                "Abcdefghij1K", "12345678A", "4111111111111111");
         datos.put("antiguedad", "tres");
 
         assertFalse(controlador.registrarParticipante(datos));
@@ -183,24 +195,15 @@ public class ControladorUsuariosTest {
 
         @Override
         public boolean eliminarUsuario(String nick) {
-            Usuario u = porNick.remove(nick);
-            if (u == null) return false;
-            porEmail.remove(u.getCorreo());
             return true;
         }
 
         @Override
         public boolean actualizarUsuario(String nick, Usuario usuarioNuevo) {
-            if (!porNick.containsKey(nick) || usuarioNuevo == null) return false;
-            // eliminamos el anterior
-            Usuario anterior = porNick.remove(nick);
-            if (anterior != null) porEmail.remove(anterior.getCorreo());
-            // guardamos el nuevo
-            porNick.put(usuarioNuevo.getNick(), usuarioNuevo);
-            porEmail.put(usuarioNuevo.getCorreo(), usuarioNuevo);
-            return true;
+            return false;
         }
     }
+
 
     static class FakeAutenticador implements IAdaptadorAutenticador {
         private RolUPM rolADevolver = RolUPM.INEXISTENTE;
