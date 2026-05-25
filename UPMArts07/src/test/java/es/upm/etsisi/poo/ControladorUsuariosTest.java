@@ -12,12 +12,10 @@ import java.nio.file.StandardOpenOption;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Pruebas unitarias para ControladorUsuarios (alta y acceso de usuarios).
+ * Pruebas unitarias para ControladorUsuarios (RegistroParticipantes solo).
  * Cubren caja negra (entradas/salidas) y caja blanca (caminos/decisiones).
  */
 public class ControladorUsuariosTest {
-
-    //private static final Path CONFLICTIVOS = Paths.get("conflictivos.txt");
 
     private FakeUsuarioDAO dao;
     private FakeAutenticador autenticador;
@@ -38,18 +36,6 @@ public class ControladorUsuariosTest {
 
         SesionActiva.getInstancia().cerrarSesion();
     }
-
-    /*@AfterEach
-    void tearDown() throws IOException {
-        SesionActiva.getInstancia().cerrarSesion();
-        try {
-            Files.deleteIfExists(CONFLICTIVOS);
-        } catch (IOException ignored) {
-        }
-    }*/
-
-
-    // ---------------------- registrarParticipante ----------------------
 
     @Test
     void registrarParticipante_nickInvalido_devuelveFalse() {
@@ -124,17 +110,14 @@ public class ControladorUsuariosTest {
     }
 
     @Test
-    void registrarParticipante_upm_pas_antiguedadNoNumerica_lanzaExcepcion() {
-        // Caja blanca: hay un Integer.parseInt sin control de excepción.
+    void registrarParticipante_upm_pas_antiguedadNoNumerica_devuelveFalse() {
         autenticador.setRolADevolver(RolUPM.PDI);
 
         HashMap<String, String> datos = datosParticipanteUPMBase("NickOk", "Nombre", "pdi@upm.es", "Abcdefghij1K", "12345678A", "4111111111111111");
         datos.put("antiguedad", "tres");
 
-        assertThrows(NumberFormatException.class, () -> controlador.registrarParticipante(datos));
+        assertFalse(controlador.registrarParticipante(datos));
     }
-
-    // ---------------------- Helpers y dobles de prueba ----------------------
 
     private static HashMap<String, String> datosBasicos(String nick, String nombre, String correo, String contrasena, String dni) {
         HashMap<String, String> datos = new HashMap<>();
@@ -156,7 +139,6 @@ public class ControladorUsuariosTest {
         return datosParticipanteExterno(nick, nombre, correoUpm, contrasena, dni, tarjeta);
     }
 
-    /** Fake DAO en memoria para aislar el controlador de I/O (ficheros). */
     static class FakeUsuarioDAO implements IUsuarioDAO {
         private final java.util.Map<String, Usuario> porEmail = new HashMap<>();
         private final java.util.Map<String, Usuario> porNick = new HashMap<>();
@@ -200,7 +182,6 @@ public class ControladorUsuariosTest {
         }
     }
 
-    /** Fake autenticador para controlar el rol devuelto en tests. */
     static class FakeAutenticador implements IAdaptadorAutenticador {
         private RolUPM rolADevolver = RolUPM.INEXISTENTE;
         void setRolADevolver(RolUPM rol) { this.rolADevolver = rol; }
