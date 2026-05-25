@@ -210,15 +210,21 @@ public class VistaUsuariosCLI {
         String tarjetaCompleta = pago.get("numeroTarjeta") + " - " + pago.get("titular");
         datos.put("tarjetaCredito", tarjetaCompleta);
 
-        // si es correo institucional, pedimos los datos específicos de la UPM
+        // si es correo institucional, consultamos el rol al autenticador
+        // si es correo institucional, consultamos el rol al autenticador
         if (datos.get("correo").endsWith("upm.es")) {
-            mostrarMensaje("Se ha detectado un correo institucional UPM.");
-            String tipo = pedirTexto("¿Eres Estudiante (E) o Personal (P)?: ");
+            mostrarMensaje("Se ha detectado un correo institucional UPM. Consultando rol...");
+            RolUPM rol = controlador.determinarRolUPM(datos.get("correo"));
 
-            if (tipo.equalsIgnoreCase("E")) {
+            if (rol == RolUPM.ESTUDIANTE) {
+                mostrarMensaje("Rol detectado: Estudiante UPM.");
                 datos.put("matricula", pedirTexto("Numero de matricula: "));
-            } else {
+            } else if (rol == RolUPM.PDI || rol == RolUPM.PAS) {
+                mostrarMensaje("Rol detectado: Personal UPM (PDI/PAS).");
                 datos.put("antiguedad", pedirTexto("Anios de antiguedad: "));
+            } else {
+                mostrarMensaje("Error: El correo UPM no está reconocido en el sistema.");
+                return;
             }
         }
 

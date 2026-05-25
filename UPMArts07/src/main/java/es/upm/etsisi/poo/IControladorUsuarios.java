@@ -21,4 +21,5 @@ public interface IControladorUsuarios {
     boolean darBajaParticipante(String nick);
     boolean validarNick(String nick);
     boolean validarContrasena(String contrasena);
+    RolUPM determinarRolUPM(String email);
 }

@@ -76,7 +76,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
 
         Usuario nuevoParticipante = null;
         if (correo.endsWith("upm.es")) {
-            RolUPM rol = determinarTipoMiembroUPM(correo);
+            RolUPM rol = determinarRolUPM(correo);
             if (rol == RolUPM.ESTUDIANTE) {
                 String matricula = (String) datos.get("matricula");
                 nuevoParticipante = new EstudianteUPM(nick, nombre, correo, contrasena, dni, tarjeta, matricula);
@@ -207,7 +207,8 @@ public class ControladorUsuarios implements IControladorUsuarios {
     }
 
 
-    public RolUPM determinarTipoMiembroUPM(String email) {
+    @Override
+    public RolUPM determinarRolUPM(String email) {
         return autenticador.validarEnUPM(email);
     }
 }

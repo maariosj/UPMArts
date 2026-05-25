@@ -113,7 +113,7 @@ public class ControladorUsuariosTest {
     @Test
     void determinarTipoMiembroUPM_delegaEnAutenticador() {
         autenticador.setRolADevolver(RolUPM.PAS);
-        assertEquals(RolUPM.PAS, controlador.determinarTipoMiembroUPM("alguien@upm.es"));
+        assertEquals(RolUPM.PAS, controlador.determinarRolUPM("alguien@upm.es"));
     }
 
     // ---------------------- login ----------------------
