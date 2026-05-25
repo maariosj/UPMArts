@@ -133,6 +133,7 @@ public class VistaUsuariosCLI {
                 System.out.println("--- Panel de Usuario ---");
                 System.out.println("1 Ver mi perfil (proximamente)");
                 System.out.println("2 Apuntarse a actividad (proximamente)");
+                System.out.println("3 Darme de baja");
             }
             System.out.println("0 Cerrar sesion");
             System.out.print("Selecciona una opcion: ");
@@ -163,6 +164,17 @@ public class VistaUsuariosCLI {
                     case "1":
                     case "2":
                         mostrarMensaje("Funcionalidad en desarrollo...");
+                        break;
+                    case "3":
+                        String nickActual = usuarioLogueado.getNick();
+                        if (usuarioLogueado instanceof Instructor) {
+                            controlador.darBajaInstructor(nickActual);
+                        } else {
+                            controlador.darBajaParticipante(nickActual);
+                        }
+                        mostrarMensaje("Te has dado de baja correctamente. ¡Hasta pronto!");
+                        cerrarSesion = true;
+                        SesionActiva.getInstancia().cerrarSesion();
                         break;
                     case "0":
                         cerrarSesion = true;

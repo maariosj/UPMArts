@@ -130,21 +130,26 @@ public class ControladorUsuarios implements IControladorUsuarios {
     @Override
     public boolean darBajaInstructor(String nick) {
         Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
-        if (!(usuarioLogueado instanceof Administrador)) {
-            return false;
+        // damos permiso si es admin O si es el propio usuario borrándose a sí mismo
+        if (usuarioLogueado instanceof Administrador || usuarioLogueado.getNick().equals(nick)) {
+            return dao.eliminarUsuario(nick);
         }
-        Usuario objetivo = dao.buscarPorEmail(nick); // buscamos por nick abajo
+        return false;
+        //la linea de abajo sobra, no tiene sentido buscar por email usando un nick
+        //Usuario objetivo = dao.buscarPorEmail(nick); // buscamos por nick abajo
         // el DAO elimina por nick directamente
-        return dao.eliminarUsuario(nick);
+        //return dao.eliminarUsuario(nick);
     }
 
     @Override
     public boolean darBajaParticipante(String nick) {
         Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
-        if (!(usuarioLogueado instanceof Administrador)) {
-            return false;
+        // damos permiso si es admin O si es el propio usuario borrándose a sí mismo
+        if (usuarioLogueado instanceof Administrador || usuarioLogueado.getNick().equals(nick)) {
+            return dao.eliminarUsuario(nick);
         }
-        return dao.eliminarUsuario(nick);
+        return false;
+        //return dao.eliminarUsuario(nick);
     }
     /*
     @Override

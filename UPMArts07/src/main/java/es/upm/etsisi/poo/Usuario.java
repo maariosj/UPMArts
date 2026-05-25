@@ -45,7 +45,7 @@ public abstract class Usuario implements IDatosUsuario {
     }
 	
 	public void setContrasena(String nuevaContrasena) {
-        this.contrasenaCifrada = nuevaContrasena;
+        this.contrasenaCifrada = cifrarContrasena(nuevaContrasena);
 	}
 	
 	public boolean verificarContrasena(String contrasena) {
