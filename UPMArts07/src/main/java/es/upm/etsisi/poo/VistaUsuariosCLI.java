@@ -37,7 +37,7 @@ public class VistaUsuariosCLI {
             System.out.println("--- Gestion de usuarios ---");
             System.out.println("1 Iniciar sesion");
             System.out.println("2 Registrar participante");
-            System.out.println("3 Registrar instructor");
+            // eliminamos la opcion 3 de aqui
             System.out.println("0 Volver");
             System.out.print("Selecciona una opcion: ");
 
@@ -49,9 +49,6 @@ public class VistaUsuariosCLI {
                     break;
                 case "2":
                     procesarRegistroParticipante();
-                    break;
-                case "3":
-                    procesarRegistroInstructor();
                     break;
                 case "0":
                     volver = true;
@@ -122,39 +119,56 @@ public class VistaUsuariosCLI {
     private void mostrarMenuSesionIniciada() {
         boolean cerrarSesion = false;
 
+        // comprobamos aquí una sola vez el tipo de usuario
+        Usuario usuarioLogueado = SesionActiva.getInstancia().getUsuario();
+        boolean esAdmin = usuarioLogueado instanceof Administrador;
+
         while (!cerrarSesion) {
             System.out.println();
-            System.out.println("--- Panel de Usuario ---");
-            // no hay que implementarlo, es para que quede bonito :)
-            System.out.println("1 Ver mi perfil (proximamente)");
-            // no hay que implementarlo, es para que quede bonito :)
-            System.out.println("2 Apuntarse a actividad (proximamente)");
+
+            if (esAdmin) {
+                System.out.println("--- Panel de Administrador ---");
+                System.out.println("1 Registrar instructor");
+            } else {
+                System.out.println("--- Panel de Usuario ---");
+                System.out.println("1 Ver mi perfil (proximamente)");
+                System.out.println("2 Apuntarse a actividad (proximamente)");
+            }
             System.out.println("0 Cerrar sesion");
             System.out.print("Selecciona una opcion: ");
 
             String opcion = scanner.nextLine().trim();
 
-            switch (opcion) {
-                case "1":
-                    // no hay que implementarlo, es para que quede bonito :)
-                    mostrarMensaje("Funcionalidad en desarrollo...");
-                    break;
-                case "2":
-                    // no hay que implementarlo, es para que quede bonito :)
-                    mostrarMensaje("Funcionalidad en desarrollo...");
-                    break;
-                case "0":
-                    cerrarSesion = true;
-                    mostrarMensaje("Cerrando sesion...");
-                    // "olvidamos" al usuario que estaba conectado
-                    SesionActiva.getInstancia().cerrarSesion();
-                    break;
-                default:
-                    mostrarMensaje("Opcion no valida.");
+            if (esAdmin) {
+                switch (opcion) {
+                    case "1":
+                        procesarRegistroInstructor();
+                        break;
+                    case "0":
+                        cerrarSesion = true;
+                        mostrarMensaje("Cerrando sesion...");
+                        SesionActiva.getInstancia().cerrarSesion();
+                        break;
+                    default:
+                        mostrarMensaje("Opcion no valida.");
+                }
+            } else {
+                switch (opcion) {
+                    case "1":
+                    case "2":
+                        mostrarMensaje("Funcionalidad en desarrollo...");
+                        break;
+                    case "0":
+                        cerrarSesion = true;
+                        mostrarMensaje("Cerrando sesion...");
+                        SesionActiva.getInstancia().cerrarSesion();
+                        break;
+                    default:
+                        mostrarMensaje("Opcion no valida.");
+                }
             }
         }
     }
-
     /*
     private void procesarRegistroParticipante() {
         HashMap<String, String> datos = pedirDatosRegistro();
