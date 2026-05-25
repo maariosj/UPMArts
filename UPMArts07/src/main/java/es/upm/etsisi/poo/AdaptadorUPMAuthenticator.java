@@ -23,7 +23,6 @@ public class AdaptadorUPMAuthenticator implements IAdaptadorAutenticador {
             if (rol == null) {
                 return RolUPM.INEXISTENTE;
             }
-
             switch (rol.name()) {
                 case "ALUMNO":
                     return RolUPM.ESTUDIANTE;

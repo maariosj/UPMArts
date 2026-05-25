@@ -11,7 +11,6 @@
 package es.upm.etsisi.poo;
 
 
-
 public interface IAdaptadorAutenticador {
 	public RolUPM validarEnUPM(String email);
 }

@@ -33,67 +33,6 @@ public class UsuarioFicheroDAO implements IUsuarioDAO {
         return u.toString();
     }
 
-    /*
-    public Usuario deserializar(String linea) {
-        String[] partes = linea.split(";");
-
-        if (partes.length < 5) {
-            return null;
-        }
-
-        String tipo = partes[0];
-
-        if (tipo.equals("EXTERNO")) {
-            if (partes.length < 7) {
-                return null;
-            }
-
-            String nick = partes[1];
-            String nombre = partes[2];
-            String correo = partes[3];
-            String contrasenaCifrada = partes[4];
-            String dni = partes[5];
-            String tarjetaCredito = partes[6];
-
-            return new ParticipanteExterno(
-                    nick,
-                    nombre,
-                    correo,
-                    contrasenaCifrada,
-                    dni,
-                    tarjetaCredito
-            );
-        }
-
-        if (tipo.equals("INSTRUCTOR")) {
-            if (partes.length < 7) {
-                return null;
-            }
-
-            String nick = partes[1];
-            String nombre = partes[2];
-            String correo = partes[3];
-            String contrasenaCifrada = partes[4];
-            String dni = partes[5];
-            String iban = partes[6];
-
-            Instructor instructor = new Instructor(
-                    nick,
-                    nombre,
-                    correo,
-                    contrasenaCifrada,
-                    true
-            );
-
-            instructor.setDni(dni);
-            instructor.setIban(iban);
-
-            return instructor;
-        }
-
-        return null;
-    }
-     */
 
     public Usuario deserializar(String linea) {
         String[] partes = linea.split(";");

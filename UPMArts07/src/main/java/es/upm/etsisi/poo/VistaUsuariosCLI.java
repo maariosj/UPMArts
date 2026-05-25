@@ -59,20 +59,6 @@ public class VistaUsuariosCLI {
         }
     }
 
-    /*
-    public HashMap<String, String> pedirDatosRegistro() {
-        HashMap<String, String> datos = new HashMap<>();
-
-        datos.put("nombre", pedirTexto("Nombre: "));
-        datos.put("apellidos", pedirTexto("Apellidos: "));
-        datos.put("nick", pedirTexto("Nick: "));
-        datos.put("correo", pedirTexto("Email UPM: "));
-        datos.put("contrasena", pedirTexto("Contrasena: "));
-        datos.put("disciplinaPrincipal", pedirTexto("Disciplina principal: "));
-
-        return datos;
-    }
-     */
     public HashMap<String, String> pedirDatosRegistro() {
         HashMap<String, String> datos = new HashMap<>();
 
@@ -188,30 +174,14 @@ public class VistaUsuariosCLI {
         }
     }
 
-    /*
-    private void procesarRegistroParticipante() {
-        HashMap<String, String> datos = pedirDatosRegistro();
-        boolean correcto = controlador.registrarParticipante(datos);
-
-        if (correcto) {
-            mostrarMensaje("Participante registrado correctamente.");
-        } else {
-            mostrarMensaje("No se pudo registrar el participante.");
-        }
-    }
-     */
     private void procesarRegistroParticipante() {
         HashMap<String, String> datos = pedirDatosRegistro();
 
-        // llamamos a pedirDatosPago()
         HashMap<String, String> pago = pedirDatosPago();
 
-        // juntamos todo en la clave tarjetaCredito que es la única que lee el Controlador
         String tarjetaCompleta = pago.get("numeroTarjeta") + " - " + pago.get("titular");
         datos.put("tarjetaCredito", tarjetaCompleta);
 
-        // si es correo institucional, consultamos el rol al autenticador
-        // si es correo institucional, consultamos el rol al autenticador
         if (datos.get("correo").endsWith("upm.es")) {
             mostrarMensaje("Se ha detectado un correo institucional UPM. Consultando rol...");
             RolUPM rol = controlador.determinarRolUPM(datos.get("correo"));
@@ -236,19 +206,7 @@ public class VistaUsuariosCLI {
             mostrarMensaje("Error: No se pudo registrar. Revisa el formato de la contraseña, que el nick no contenga palabras prohibidas o que el correo no este ya en uso.");
         }
     }
-    /*
-    private void procesarRegistroInstructor() {
-        HashMap<String, String> datos = pedirDatosRegistro();
-        HashMap<String, String> pago = pedirDatosPago();
-        boolean correcto = controlador.registrarInstructor(datos, pago);
 
-        if (correcto) {
-            mostrarMensaje("Instructor registrado correctamente.");
-        } else {
-            mostrarMensaje("No se pudo registrar el instructor.");
-        }
-    }
-     */
     private void procesarRegistroInstructor() {
         HashMap<String, String> datos = pedirDatosRegistro(); // pedimos nombre, nick, correo, pass y DNI
 

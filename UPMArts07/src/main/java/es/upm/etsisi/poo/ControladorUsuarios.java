@@ -24,40 +24,6 @@ public class ControladorUsuarios implements IControladorUsuarios {
         this.validadorNick = new ValidadorNick();
     }
 
-    /*
-    @Override
-    public boolean registrarParticipante(HashMap datos) {
-        String nick = (String) datos.get("nick");
-        String nombre = (String) datos.get("nombre");
-        String correo = (String) datos.get("correo");
-        String contrasena = (String) datos.get("contrasena");
-        String dni = (String) datos.get("dni");
-        String tarjeta = (String) datos.get("tarjetaCredito");
-        if (!validarNick(nick) || !validarContrasena(contrasena)) {
-            return false;
-        }
-        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
-            return false; // Usuario ya registrado
-        }
-
-        Usuario nuevoParticipante = null;
-        if (correo.endsWith("upm.es")) {
-            RolUPM rol = determinarTipoMiembroUPM(correo);
-            if (rol == RolUPM.ESTUDIANTE) {
-                String matricula = (String) datos.get("matricula");
-                nuevoParticipante = new EstudianteUPM(nick, nombre, correo, contrasena, dni, tarjeta, matricula);
-            } else if (rol == RolUPM.PDI || rol == RolUPM.PAS) {
-                int antiguedad = Integer.parseInt((String) datos.get("antiguedad"));
-                nuevoParticipante = new PersonalUPM(nick, nombre, correo, contrasena, dni, tarjeta, antiguedad);
-            } else {
-                return false;
-            }
-        } else {
-            nuevoParticipante = new ParticipanteExterno(nick, nombre, correo, contrasena, dni, tarjeta);
-        }
-        return dao.guardarUsuario(nuevoParticipante);
-    }
-     */
     @Override
     public boolean registrarParticipante(HashMap datos) {
         String nick = (String) datos.get("nick");
@@ -135,10 +101,6 @@ public class ControladorUsuarios implements IControladorUsuarios {
             return dao.eliminarUsuario(nick);
         }
         return false;
-        //la linea de abajo sobra, no tiene sentido buscar por email usando un nick
-        //Usuario objetivo = dao.buscarPorEmail(nick); // buscamos por nick abajo
-        // el DAO elimina por nick directamente
-        //return dao.eliminarUsuario(nick);
     }
 
     @Override
@@ -151,26 +113,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
         return false;
         //return dao.eliminarUsuario(nick);
     }
-    /*
-    @Override
-    public boolean registrarInstructor(HashMap datos, HashMap pago) {
-        String nick = (String) datos.get("nick");
-        String nombre = (String) datos.get("nombre");
-        String correo = (String) datos.get("correo");
-        String contrasena = (String) datos.get("contrasena");
-        String dni = (String) datos.get("dni");
-        String iban = (String) pago.get("iban");
-        if (!validarNick(nick) || !validarContrasena(contrasena)) {
-            return false;
-        }
-        if (dao.buscarPorEmail(correo) != null || dao.existeNick(nick)) {
-            return false;
-        }
-        Usuario nuevoInstructor = new Instructor(nick, nombre, correo, contrasena, dni, iban);
-        return dao.guardarUsuario(nuevoInstructor);
-    }
 
-     */
 
     @Override
     public boolean login(String email, String contrasena) {
@@ -190,6 +133,7 @@ public class ControladorUsuarios implements IControladorUsuarios {
         if (contrasena == null || contrasena.length() < 12) {
             return false;
         }
+
         boolean tieneMayus = false;
         boolean tieneMinus = false;
         boolean tieneNum = false;
