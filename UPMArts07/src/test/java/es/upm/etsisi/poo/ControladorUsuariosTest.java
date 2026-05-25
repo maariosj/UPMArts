@@ -23,12 +23,6 @@ public class ControladorUsuariosTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        // Aseguramos fichero de términos conflictivos para que ValidadorNick sea determinista
-
-       /* Files.write(CONFLICTIVOS, "badnick\nadmin\n".getBytes(),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);*/
-
 
         dao = new FakeUsuarioDAO();
         autenticador = new FakeAutenticador();
@@ -98,6 +92,32 @@ public class ControladorUsuariosTest {
         assertNotNull(u);
         assertTrue(u instanceof PersonalUPM);
         assertEquals(3, ((PersonalUPM) u).getAntiguedad());
+    }
+    @Test
+    void registrarParticipante_upm_pdi_correcto_guardaPersonalUPM() {
+        autenticador.setRolADevolver(RolUPM.PDI);
+
+        HashMap<String, String> datos = datosParticipanteUPMBase("NickPdi", "Dr. Genio", "profesor@upm.es", "Abcdefghij1K", "87654321B", "4111111111111111");
+        datos.put("antiguedad", "5");
+
+        assertTrue(controlador.registrarParticipante(datos));
+        Usuario u = dao.buscarPorEmail("profesor@upm.es");
+        assertNotNull(u);
+        assertTrue(u instanceof PersonalUPM);
+        assertEquals(5, ((PersonalUPM) u).getAntiguedad());
+    }
+
+    @Test
+    void registrarParticipante_upm_estudiante_conDominioAlumnos_correcto() {
+        autenticador.setRolADevolver(RolUPM.ESTUDIANTE);
+
+        HashMap<String, String> datos = datosParticipanteUPMBase("AlumnoS", "Luis Lopez", "l.lopez@alumnos.upm.es", "Abcdefghij1K", "11223344C", "4111111111111111");
+        datos.put("matricula", "M5678");
+
+        assertTrue(controlador.registrarParticipante(datos));
+        Usuario u = dao.buscarPorEmail("l.lopez@alumnos.upm.es");
+        assertNotNull(u);
+        assertTrue(u instanceof EstudianteUPM);
     }
 
     @Test
